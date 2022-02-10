@@ -1,9 +1,10 @@
 const axios = require("axios").default
 const express = require("express")
 const cors = require("cors")
+const path = require("path");
 require('dotenv').config()
 const app = express()
-
+// const router = express.Router()
 app.use(cors())
 
 app.get('/word', (req, res) => {
@@ -21,7 +22,6 @@ app.get('/word', (req, res) => {
         console.error('get word fucked with ' + error.message)
     })
 })
-
 
 app.get('/check', (req, res) => {
     const word = req.query.word
@@ -42,6 +42,14 @@ app.get('/check', (req, res) => {
         console.error('check fucked with ' + error.message)
     })
 })
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname + '/index.html'))
+})
+
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, 'public')))
+// app.use('/', router)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log('Server running on port ' + PORT))
