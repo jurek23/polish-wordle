@@ -4,7 +4,6 @@ const cors = require("cors")
 const path = require("path");
 require('dotenv').config()
 const app = express()
-// const router = express.Router()
 app.use(cors())
 
 app.get('/word', (req, res) => {
@@ -47,9 +46,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'))
 })
 
-// Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, 'public')))
-// app.use('/', router)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log('Server running on port ' + PORT))

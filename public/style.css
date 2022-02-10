@@ -55,6 +55,10 @@ body {
     width: 68px;
 }
 
+.overview-container h3 {
+    text-align: center;
+}
+
 .tile-container div {
     display: flex;
 }
@@ -73,11 +77,12 @@ body {
 }
 
 .message-container {
-    height: 30px;
+    height: 45px;
 }
 
 .message-container p {
-    background-color: #818384;
+    /*background-color: #818384;*/
+    background-color: red;
     border-radius: 10px;
     padding: 10px;
     margin: 0;

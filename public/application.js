@@ -128,18 +128,18 @@ const checkRow = () => {
             .then(response => response.json())
             .then(status => {
                 if (status === 404 || status === 400) {
-                    showMessage('brak słowa w słowniku...')
+                    showMessage('brak słowa w słowniku...', 3000)
                     return
                 } else {
                     flipTile()
                     if (wordle === guess) {
-                        showMessage('brawo!')
+                        showMessage('brawo!', 10000)
                         gameOver = true
                         return
                     } else {
                         if (currentRow >= 5) {
                             gameOver = true
-                            showMessage('koniec gry... chodziło o ' + wordle)
+                            showMessage('koniec gry... chodziło o ' + wordle, 60000)
                             return
                         }
                         if (currentRow < 5) {
@@ -152,11 +152,11 @@ const checkRow = () => {
     }
 }
 
-const showMessage = (message) => {
+const showMessage = (message, time) => {
     const messageElement = document.createElement('p')
     messageElement.textContent = message
     messageDisplay.append(messageElement)
-    setTimeout(() => messageDisplay.removeChild(messageElement), 5000)
+    setTimeout(() => messageDisplay.removeChild(messageElement), time)
 }
 
 const addColorToKey = (keyLetter, color) => {
