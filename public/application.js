@@ -6,7 +6,7 @@ const messageDisplay = document.querySelector('.message-container')
 let wordle
 
 const getWordle = () => {
-    fetch('http://localhost:3000/word')
+    fetch('https://polish-wordle.herokuapp.com/word')
         .then(response => response.json())
         .then(json => {
             wordle = json.toUpperCase()
@@ -124,7 +124,7 @@ const deleteLetter = () => {
 const checkRow = () => {
     const guess = guessRows[currentRow].join('')
     if (currentTile > 4) {
-        fetch(`http://localhost:3000/check/?word=${guess.toLowerCase()}`)
+        fetch(`https://polish-wordle.herokuapp.com/check/?word=${guess.toLowerCase()}`)
             .then(response => response.json())
             .then(status => {
                 if (status === 404 || status === 400) {
