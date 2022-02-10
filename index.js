@@ -1,4 +1,3 @@
-const PORT = 8000
 const axios = require("axios").default
 const express = require("express")
 const cors = require("cors")
@@ -19,7 +18,7 @@ app.get('/word', (req, res) => {
     axios.request(options).then((response) => {
         res.json(response.data.word)
     }).catch((error) => {
-        console.error('get word error ' + error.message)
+        console.error('get word fucked with ' + error.message)
     })
 })
 
@@ -38,12 +37,11 @@ app.get('/check', (req, res) => {
     }
 
     axios.request(options).then((response) => {
-        console.log('called check and got ' + response.status)
         res.json(response.status)
     }).catch((error) => {
         console.error('check fucked with ' + error.message)
     })
 })
 
-
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log('Server running on port ' + PORT))
