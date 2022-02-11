@@ -4,6 +4,7 @@ const messageDisplay = document.querySelector('.message-container')
 
 //TODO błąd z KRZAK
 let wordle
+let meaning
 
 const getWordle = () => {
     fetch('https://polish-wordle.herokuapp.com/word')
@@ -128,16 +129,27 @@ const checkRow = () => {
             .then(response => response.json())
             .then(status => {
                 if (status === 404 || status === 400) {
-                    showMessage('brak słowa w słowniku...', 3000)
+                    showMessage('brak słowa w słowniku...', 3000, 'red')
                 } else {
                     flipTile()
                     if (wordle === guess) {
-                        showMessage('brawo!', 10000)
+                        showMessage('brawo!', 10000, 'green')
                         gameOver = true
                     } else {
+                        //if current row == 4 call sjp to prepare a wordle meaning
+                        if (currentRow === 4) {
+                            fetch(`https://polish-wordle.herokuapp.com/whatdoesitmean?word=${wordle.toLowerCase()}`)
+                                .then(response => response.json())
+                                .then(sjpMeaning => {
+                                    meaning = sjpMeaning
+                                }).catch((error) => {
+                                    console.error('meaning check fucked with ' + error.message)
+                                })
+                        }
                         if (currentRow >= 5) {
                             gameOver = true
-                            showMessage('koniec gry... chodziło o ' + wordle, 60000)
+                            let means = meaning === undefined ? '' : ' (' + meaning.trim() + ')'
+                            showMessage('koniec gry (przeładuj stronę po następne słowo)... chodziło o ' + wordle + means, 120000, 'red')
                             return
                         }
                         if (currentRow < 5) {
@@ -150,8 +162,11 @@ const checkRow = () => {
     }
 }
 
-const showMessage = (message, time) => {
+const showMessage = (message, time, color) => {
     const messageElement = document.createElement('p')
+    if (color !== undefined) {
+        messageElement.style.backgroundColor = color
+    }
     messageElement.textContent = message
     messageDisplay.append(messageElement)
     setTimeout(() => messageDisplay.removeChild(messageElement), time)

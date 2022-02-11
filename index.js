@@ -1,4 +1,5 @@
 const axios = require("axios").default
+const cheerio = require("cheerio")
 const express = require("express")
 const cors = require("cors")
 const path = require("path");
@@ -39,6 +40,37 @@ app.get('/check', (req, res) => {
         res.json(response.status)
     }).catch((error) => {
         console.error('check fucked with ' + error.message)
+    })
+})
+
+app.get('/whatdoesitmean', (req, res) => {
+    const word = req.query.word
+
+    const options = {
+        method: 'GET',
+        url: encodeURI('https://sjp.pl/' + word),
+        validateStatus: false
+    }
+
+    axios.request(options).then((response) => {
+        const html = response.data
+        const $ = cheerio.load(html)
+        let allParagraphs = $('p')
+        let meaningIndex = 0
+        let meaning = ''
+        allParagraphs.each(function (i, e) {
+            if ($(this).text().includes('znaczenie: ')) {
+                meaningIndex = i + 1
+            }
+            if (i > 0 && i === meaningIndex && !$(this).hasClass('ifm'))
+                // console.log('i: ' + i)
+                // console.log($(this).hasClass('ifm'))
+                meaning += $(this).text()
+        })
+
+        res.json(meaning)
+    }).catch((error) => {
+        console.error('meaning check fucked with ' + error.message)
     })
 })
 
