@@ -129,11 +129,12 @@ const checkRow = () => {
             .then(response => response.json())
             .then(status => {
                 if (status === 404 || status === 400) {
-                    showMessage('brak słowa w słowniku...', 3000, 'red')
+                    showMessage('brak słowa w słowniku', 3000, 'red')
                 } else {
                     flipTile()
                     if (wordle === guess) {
                         showMessage('brawo!', 10000, 'green')
+                        showMessage('(przeładuj stronę po następne słowo)', 10000, 'green')
                         gameOver = true
                     } else {
                         //if current row == 4 call sjp to prepare a wordle meaning
@@ -149,7 +150,7 @@ const checkRow = () => {
                         if (currentRow >= 5) {
                             gameOver = true
                             let means = meaning === undefined ? '' : ' (' + meaning.trim() + ')'
-                            showMessage('koniec gry (przeładuj stronę po następne słowo)...', 120000, 'red')
+                            showMessage('koniec gry (przeładuj stronę po następne słowo)', 120000, 'red')
                             showMessage('chodziło o ' + wordle, 120000, '#36b131')
                             showMessage(means, 120000, '#36b131')
                             return
