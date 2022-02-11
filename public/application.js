@@ -129,13 +129,11 @@ const checkRow = () => {
             .then(status => {
                 if (status === 404 || status === 400) {
                     showMessage('brak słowa w słowniku...', 3000)
-                    return
                 } else {
                     flipTile()
                     if (wordle === guess) {
                         showMessage('brawo!', 10000)
                         gameOver = true
-                        return
                     } else {
                         if (currentRow >= 5) {
                             gameOver = true
@@ -173,16 +171,16 @@ const flipTile = () => {
         guess.push({letter: tile.getAttribute('data'), color: 'grey-overlay'})
     })
 
-    guess.forEach((guess, index) => {
-        if (guess.letter === wordle[index]) {
-            guess.color = 'green-overlay'
+    guess.forEach(guess => {
+        if (checkWordle.includes(guess.letter)) {
+            guess.color = 'yellow-overlay'
             checkWordle = checkWordle.replace(guess.letter, '')
         }
     })
 
-    guess.forEach(guess => {
-        if (checkWordle.includes(guess.letter)) {
-            guess.color = 'yellow-overlay'
+    guess.forEach((guess, index) => {
+        if (guess.letter === wordle[index]) {
+            guess.color = 'green-overlay'
             checkWordle = checkWordle.replace(guess.letter, '')
         }
     })

@@ -12,7 +12,7 @@ body {
     height: 90vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
     align-items: center;
 }
 
@@ -24,7 +24,7 @@ body {
 
 .tile-container {
     width: 330px;
-    margin-bottom: 15px;
+    /*margin-bottom: 15px;*/
 }
 
 .keyboard-container {
@@ -55,7 +55,7 @@ body {
     width: 68px;
 }
 
-.overview-container h3 {
+.overview-container h3, h5 {
     text-align: center;
 }
 
@@ -77,15 +77,18 @@ body {
 }
 
 .message-container {
-    height: 45px;
+    /*height: 45px;*/
+    /*margin: 10px 0px 10px 0px*/
+    display: block;
+    min-height: 62px;
 }
 
 .message-container p {
     /*background-color: #818384;*/
     background-color: red;
     border-radius: 10px;
-    padding: 10px;
-    margin: 0;
+    padding: 5px;
+    /*margin: 0;*/
 }
 
 .tile.flip {
