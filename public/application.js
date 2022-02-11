@@ -149,7 +149,9 @@ const checkRow = () => {
                         if (currentRow >= 5) {
                             gameOver = true
                             let means = meaning === undefined ? '' : ' (' + meaning.trim() + ')'
-                            showMessage('koniec gry (przeładuj stronę po następne słowo)... chodziło o ' + wordle + means, 120000, 'red')
+                            showMessage('koniec gry (przeładuj stronę po następne słowo)...', 120000, 'red')
+                            showMessage('chodziło o ' + wordle, 120000, '#36b131')
+                            showMessage(means, 120000, '#36b131')
                             return
                         }
                         if (currentRow < 5) {

@@ -86,10 +86,11 @@ body {
 
 .message-container p {
     /*background-color: #818384;*/
-    /*background-color: red;*/
+    /*background-color: #00ff55;*/
     border-radius: 10px;
     padding: 5px;
     /*margin: 0;*/
+    text-align: center;
 }
 
 .tile.flip {
