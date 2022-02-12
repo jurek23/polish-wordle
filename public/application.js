@@ -46,7 +46,7 @@ const keys = [
     'J',
     'K',
     'L',
-    '«',
+    '←',
     'Z',
     'X',
     'C',
@@ -90,7 +90,7 @@ keys.forEach(key => {
 
 const handleClick = (letter) => {
     if (!gameOver) {
-        if (letter === '«') {
+        if (letter === '←') {
             deleteLetter()
             return
         }
