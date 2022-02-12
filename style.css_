@@ -99,18 +99,16 @@ body {
     }
 }
 
-
-
-.grey-overlay {
+.grey-layer {
     background-color: #3a3a3c !important;
     border:none !important;
 }
-.yellow-overlay {
+.yellow-layer {
     background-color: #b59f3a !important;
     border:none !important;
 }
 
-.green-overlay {
+.green-layer {
     background-color: #538d4e !important;
     border:none !important;
 }

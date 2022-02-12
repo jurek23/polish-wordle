@@ -1,5 +1,5 @@
-const tileDisplay = document.querySelector('.tile-container')
-const keyboard = document.querySelector('.keyboard-container')
+const tilesDisplay = document.querySelector('.tile-container')
+const keyboardDisplay = document.querySelector('.keyboard-container')
 const messageDisplay = document.querySelector('.message-container')
 
 //TODO błąd z KRZAK
@@ -17,46 +17,10 @@ const getWordle = () => {
 }
 getWordle()
 
-const keys = [
-    'Ą',
-    'Ć',
-    'Ę',
-    'Ł',
-    'Ó',
-    'Ś',
-    'Ń',
-    'Ż',
-    'Ź',
-    'Q',
-    'W',
-    'E',
-    'R',
-    'T',
-    'Y',
-    'U',
-    'I',
-    'O',
-    'P',
-    'A',
-    'S',
-    'D',
-    'F',
-    'G',
-    'H',
-    'J',
-    'K',
-    'L',
-    '←',
-    'Z',
-    'X',
-    'C',
-    'V',
-    'B',
-    'N',
-    'M',
-    'ENTER'
-]
-const guessRows = [
+const keyboard = ['Ą', 'Ć', 'Ę', 'Ł', 'Ó', 'Ś', 'Ń', 'Ż', 'Ź', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S',
+    'D', 'F', 'G', 'H', 'J', 'K', 'L', '←', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'ENTER']
+
+const guesses = [
     ['', '', '', '', ''],
     ['', '', '', '', ''],
     ['', '', '', '', ''],
@@ -64,11 +28,11 @@ const guessRows = [
     ['', '', '', '', ''],
     ['', '', '', '', '']
 ]
-let currentRow = 0
-let currentTile = 0
 let gameOver = false
+let currentLetter = 0
+let currentRow = 0
 
-guessRows.forEach((guessRow, guessRowIndex) => {
+guesses.forEach((guessRow, guessRowIndex) => {
     const rowElement = document.createElement('div')
     rowElement.setAttribute('id', 'guessRow-' + guessRowIndex)
     guessRow.forEach((_guess, guessIndex) => {
@@ -77,25 +41,25 @@ guessRows.forEach((guessRow, guessRowIndex) => {
         tileElement.classList.add('tile')
         rowElement.append(tileElement)
     })
-    tileDisplay.append(rowElement)
+    tilesDisplay.append(rowElement)
 })
 
-keys.forEach(key => {
+keyboard.forEach(key => {
     const buttonElement = document.createElement('button')
     buttonElement.textContent = key
     buttonElement.setAttribute('id', key)
-    buttonElement.addEventListener('click', () => handleClick(key))
-    keyboard.append(buttonElement)
+    buttonElement.addEventListener('click', () => handleClickLetter(key))
+    keyboardDisplay.append(buttonElement)
 })
 
-const handleClick = (letter) => {
+const handleClickLetter = (letter) => {
     if (!gameOver) {
         if (letter === '←') {
             deleteLetter()
             return
         }
         if (letter === 'ENTER') {
-            checkRow()
+            checkWord()
             return
         }
         addLetter(letter)
@@ -103,40 +67,43 @@ const handleClick = (letter) => {
 }
 
 const addLetter = (letter) => {
-    if (currentTile < 5 && currentRow < 6) {
-        const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
+    if (currentLetter < 5 && currentRow < 6) {
+        const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentLetter)
         tile.textContent = letter
-        guessRows[currentRow][currentTile] = letter
+        guesses[currentRow][currentLetter] = letter
         tile.setAttribute('data', letter)
-        currentTile++
+        currentLetter++
     }
 }
 
 const deleteLetter = () => {
-    if (currentTile > 0) {
-        currentTile--
-        const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
+    if (currentLetter > 0) {
+        currentLetter--
+        const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentLetter)
         tile.textContent = ''
-        guessRows[currentRow][currentTile] = ''
+        guesses[currentRow][currentLetter] = ''
         tile.setAttribute('data', '')
     }
 }
 
-const checkRow = () => {
-    const guess = guessRows[currentRow].join('')
-    if (currentTile > 4) {
+const checkWord = () => {
+    const guess = guesses[currentRow].join('')
+    if (currentLetter > 4) {
         fetch(`https://polish-wordle.herokuapp.com/check/?word=${guess.toLowerCase()}`)
             .then(response => response.json())
             .then(status => {
                 if (status === 404 || status === 400) {
                     showMessage('brak słowa w słowniku', 3000, 'red')
                 } else {
-                    flipTile()
+                    // TODO
+                    // flipTile()
                     if (wordle === guess) {
+                        flipTile()
                         showMessage('brawo!', 10000, 'green')
-                        showMessage('(przeładuj stronę po następne słowo)', 10000, 'green')
+                        showMessage('(odśwież stronę po następne słowo)', 10000, 'green')
                         gameOver = true
                     } else {
+                        flipTile()
                         //if current row == 4 call sjp to prepare a wordle meaning
                         if (currentRow === 4) {
                             fetch(`https://polish-wordle.herokuapp.com/whatdoesitmean?word=${wordle.toLowerCase()}`)
@@ -150,14 +117,14 @@ const checkRow = () => {
                         if (currentRow >= 5) {
                             gameOver = true
                             let means = meaning === undefined ? '' : meaning.trim()
-                            showMessage('koniec gry (przeładuj stronę po następne słowo)', 120000, 'red')
+                            showMessage('koniec gry (odśwież stronę po następne słowo)', 120000, 'red')
                             showMessage('chodziło o ' + wordle, 120000, '#36b131')
                             showMessage(means, 120000, '#36b131')
                             return
                         }
                         if (currentRow < 5) {
                             currentRow++
-                            currentTile = 0
+                            currentLetter = 0
                         }
                     }
                 }
@@ -182,24 +149,24 @@ const addColorToKey = (keyLetter, color) => {
 
 const flipTile = () => {
     const rowTiles = document.querySelector('#guessRow-' + currentRow).childNodes
-    let checkWordle = wordle
+    let wordleToCheck = wordle
     const guess = []
 
     rowTiles.forEach(tile => {
-        guess.push({letter: tile.getAttribute('data'), color: 'grey-overlay'})
+        guess.push({letter: tile.getAttribute('data'), color: 'grey-layer'})
     })
 
     guess.forEach(guess => {
-        if (checkWordle.includes(guess.letter)) {
-            guess.color = 'yellow-overlay'
-            checkWordle = checkWordle.replace(guess.letter, '')
+        if (wordleToCheck.includes(guess.letter)) {
+            guess.color = 'yellow-layer'
+            wordleToCheck = wordleToCheck.replace(guess.letter, '')
         }
     })
 
     guess.forEach((guess, index) => {
         if (guess.letter === wordle[index]) {
-            guess.color = 'green-overlay'
-            checkWordle = checkWordle.replace(guess.letter, '')
+            guess.color = 'green-layer'
+            wordleToCheck = wordleToCheck.replace(guess.letter, '')
         }
     })
 

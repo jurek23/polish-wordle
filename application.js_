@@ -169,19 +169,19 @@ const flipTile = () => {
     const guess = []
 
     rowTiles.forEach(tile => {
-        guess.push({letter: tile.getAttribute('data'), color: 'grey-overlay'})
+        guess.push({letter: tile.getAttribute('data'), color: 'grey-layer'})
     })
 
     guess.forEach((guess, index) => {
         if (guess.letter === wordle[index]) {
-            guess.color = 'green-overlay'
+            guess.color = 'green-layer'
             checkWordle = checkWordle.replace(guess.letter, '')
         }
     })
 
     guess.forEach(guess => {
         if (checkWordle.includes(guess.letter)) {
-            guess.color = 'yellow-overlay'
+            guess.color = 'yellow-layer'
             checkWordle = checkWordle.replace(guess.letter, '')
         }
     })
