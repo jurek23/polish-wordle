@@ -1,5 +1,5 @@
 # polish-wordle
-Polish version of wordle game where you don't need to wait a day for next word to guess
+Polish version of wordle game where you don't need to wait a day for next word to guess. Deployed on http://polish-wordle.herokuapp.com/
 
 # Getting Started
 
