@@ -3,7 +3,7 @@ const keyboardDisplay = document.querySelector('.keyboard-container')
 const messageDisplay = document.querySelector('.message-container')
 
 //TODO błąd z KRZAK
-let wordle
+let wordle = 'BLASK'
 let meaning
 
 const getWordle = () => {
@@ -15,7 +15,7 @@ const getWordle = () => {
         })
         .catch(err => console.log('get wordle fucked with ' + err.message))
 }
-getWordle()
+// getWordle()
 
 const keyboard = ['Ą', 'Ć', 'Ę', 'Ł', 'Ó', 'Ś', 'Ń', 'Ż', 'Ź', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S',
     'D', 'F', 'G', 'H', 'J', 'K', 'L', '←', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'ENTER']
@@ -147,6 +147,17 @@ const addColorToKey = (keyLetter, color) => {
     key.classList.add(color)
 }
 
+function alsoPresentInCorrectPlace(letter, startIndex, guess) {
+    for (let i = startIndex; i < wordle.length - 1; i++) {
+        console.log('sI [' + startIndex +'], i [' +  i + '] guess.letter ' + guess.letter)
+        if (guess.letter === letter && wordle[i] === letter) {
+            console.log('yep!')
+            return true
+        }
+    }
+    return false
+}
+
 const flipTile = () => {
     const rowTiles = document.querySelector('#guessRow-' + currentRow).childNodes
     let wordleToCheck = wordle
@@ -156,8 +167,8 @@ const flipTile = () => {
         guess.push({letter: tile.getAttribute('data'), color: 'grey-layer'})
     })
 
-    guess.forEach(guess => {
-        if (wordleToCheck.includes(guess.letter)) {
+    guess.forEach((guess, index) => {
+        if (wordleToCheck.includes(guess.letter) && !alsoPresentInCorrectPlace(guess.letter, index, guess)) {
             guess.color = 'yellow-layer'
             wordleToCheck = wordleToCheck.replace(guess.letter, '')
         }
